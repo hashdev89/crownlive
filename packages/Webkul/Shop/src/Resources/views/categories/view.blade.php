@@ -226,6 +226,24 @@
                 computed: {
                     queryParams() {
                         let queryParams = Object.assign({}, this.filters.filter, this.filters.toolbar);
+                        
+                        // Check if this is the "new-arrivals" category
+                        @if($category->slug === 'new-arrivals')
+                            // For new-arrivals, don't filter by category_id
+                            // This will show all newly added products regardless of category assignment
+                            // Sort by created_at descending to show newest first
+                            if (!queryParams.sort || queryParams.sort === '') {
+                                queryParams.sort = 'created_at-desc';
+                            }
+                            // Don't add category_id filter - show all new products
+                        @elseif($category->slug === 'perfumes')
+                            // For perfumes category, show all products without category filter
+                            // This allows showing all products with pagination (12, 24, 36, 48)
+                            // Don't add category_id filter - show all products
+                        @else
+                            // Always include category_id in query params for other categories
+                            queryParams.category_id = {{ $category->id }};
+                        @endif
 
                         return this.removeJsonEmptyValues(queryParams);
                     },
@@ -233,6 +251,11 @@
                     queryString() {
                         return this.jsonToQueryString(this.queryParams);
                     },
+                },
+
+                mounted() {
+                    // Load products on component mount
+                    this.getProducts();
                 },
 
                 watch: {
@@ -263,7 +286,19 @@
 
                         document.body.style.overflow ='scroll';
 
-                        this.$axios.get("{{ route('shop.api.products.index', ['category_id' => $category->id]) }}", {
+                        // Use relative URL to avoid absolute URL issues
+                        let apiUrl = "{{ route('shop.api.products.index') }}";
+                        if (apiUrl.startsWith('http://') || apiUrl.startsWith('https://')) {
+                            try {
+                                const url = new URL(apiUrl);
+                                apiUrl = url.pathname + url.search;
+                            } catch (e) {
+                                // If URL parsing fails, try simple replace
+                                apiUrl = apiUrl.replace(/^https?:\/\/[^\/]+/, '');
+                            }
+                        }
+                        
+                        this.$axios.get(apiUrl, {
                             params: this.queryParams 
                         })
                             .then(response => {
@@ -271,9 +306,11 @@
 
                                 this.products = response.data.data;
 
-                                this.links = response.data.links;
+                                // Convert pagination links to relative URLs
+                                this.links = this.convertLinksToRelative(response.data.links);
                             }).catch(error => {
                                 console.log(error);
+                                this.isLoading = false;
                             });
                     },
 
@@ -284,16 +321,51 @@
 
                         this.loader = true;
 
-                        this.$axios.get(this.links.next)
+                        // Convert absolute URLs to relative URLs
+                        let nextUrl = this.links.next;
+                        if (nextUrl.startsWith('http://') || nextUrl.startsWith('https://')) {
+                            try {
+                                const url = new URL(nextUrl);
+                                nextUrl = url.pathname + url.search;
+                            } catch (e) {
+                                // If URL parsing fails, try simple replace
+                                nextUrl = nextUrl.replace(/^https?:\/\/[^\/]+/, '');
+                            }
+                        }
+
+                        this.$axios.get(nextUrl)
                             .then(response => {
                                 this.loader = false;
 
                                 this.products = [...this.products, ...response.data.data];
 
-                                this.links = response.data.links;
+                                // Convert pagination links to relative URLs
+                                this.links = this.convertLinksToRelative(response.data.links);
                             }).catch(error => {
                                 console.log(error);
+                                this.loader = false;
                             });
+                    },
+
+                    convertLinksToRelative(links) {
+                        if (!links) return {};
+                        
+                        const converted = {};
+                        for (const key in links) {
+                            if (links[key]) {
+                                let url = links[key];
+                                if (url.startsWith('http://') || url.startsWith('https://')) {
+                                    try {
+                                        const urlObj = new URL(url);
+                                        url = urlObj.pathname + urlObj.search;
+                                    } catch (e) {
+                                        url = url.replace(/^https?:\/\/[^\/]+/, '');
+                                    }
+                                }
+                                converted[key] = url;
+                            }
+                        }
+                        return converted;
                     },
 
                     removeJsonEmptyValues(params) {

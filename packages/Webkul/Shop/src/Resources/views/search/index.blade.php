@@ -188,6 +188,11 @@
                     },
                 },
 
+                mounted() {
+                    // Load products on component mount
+                    this.getProducts();
+                },
+
                 watch: {
                     queryParams() {
                         this.getProducts();
@@ -214,7 +219,19 @@
                             filter: false,
                         };
 
-                        this.$axios.get(("{{ route('shop.api.products.index') }}"), { 
+                        // Use relative URL to avoid absolute URL issues
+                        let apiUrl = "{{ route('shop.api.products.index') }}";
+                        if (apiUrl.startsWith('http://') || apiUrl.startsWith('https://')) {
+                            try {
+                                const url = new URL(apiUrl);
+                                apiUrl = url.pathname + url.search;
+                            } catch (e) {
+                                // If URL parsing fails, try simple replace
+                                apiUrl = apiUrl.replace(/^https?:\/\/[^\/]+/, '');
+                            }
+                        }
+
+                        this.$axios.get(apiUrl, { 
                             params: this.queryParams 
                         })
                             .then(response => {
@@ -222,22 +239,60 @@
 
                                 this.products = response.data.data;
 
-                                this.links = response.data.links;
+                                // Convert pagination links to relative URLs
+                                this.links = this.convertLinksToRelative(response.data.links);
                             }).catch(error => {
                                 console.log(error);
+                                this.isLoading = false;
                             });
                     },
 
                     loadMoreProducts() {
-                        if (this.links.next) {
-                            this.$axios.get(this.links.next).then(response => {
-                                this.products = [...this.products, ...response.data.data];
-
-                                this.links = response.data.links;
-                            }).catch(error => {
-                                console.log(error);
-                            });
+                        if (!this.links.next) {
+                            return;
                         }
+
+                        // Convert absolute URLs to relative URLs
+                        let nextUrl = this.links.next;
+                        if (nextUrl.startsWith('http://') || nextUrl.startsWith('https://')) {
+                            try {
+                                const url = new URL(nextUrl);
+                                nextUrl = url.pathname + url.search;
+                            } catch (e) {
+                                // If URL parsing fails, try simple replace
+                                nextUrl = nextUrl.replace(/^https?:\/\/[^\/]+/, '');
+                            }
+                        }
+
+                        this.$axios.get(nextUrl).then(response => {
+                            this.products = [...this.products, ...response.data.data];
+
+                            // Convert pagination links to relative URLs
+                            this.links = this.convertLinksToRelative(response.data.links);
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                    },
+
+                    convertLinksToRelative(links) {
+                        if (!links) return {};
+                        
+                        const converted = {};
+                        for (const key in links) {
+                            if (links[key]) {
+                                let url = links[key];
+                                if (url.startsWith('http://') || url.startsWith('https://')) {
+                                    try {
+                                        const urlObj = new URL(url);
+                                        url = urlObj.pathname + urlObj.search;
+                                    } catch (e) {
+                                        url = url.replace(/^https?:\/\/[^\/]+/, '');
+                                    }
+                                }
+                                converted[key] = url;
+                            }
+                        }
+                        return converted;
                     },
 
                     removeJsonEmptyValues(params) {
