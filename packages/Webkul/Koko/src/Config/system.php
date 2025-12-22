@@ -73,9 +73,40 @@ return [
                 'validation' => 'required_if:active,1',
             ],
             [
+                'name' => 'callback_base_url',
+                'title' => 'Callback Base URL (Optional)',
+                'type' => 'text',
+                'depends' => 'active:1',
+                'validation' => 'nullable|url',
+                'info' => 'Override base URL for callbacks. Leave empty to use current domain. Required for local testing with ngrok/tunneling.',
+                'example' => 'https://crowngallery.lk or https://leguminous-unhumbly-clare.ngrok-free.dev',
+            ],
+            [
                 'name' => 'active',
                 'title' => 'Enable',
                 'type' => 'boolean',
+                'channel_based' => false,
+                'locale_based' => false,
+            ],
+            [
+                'name'    => 'sort',
+                'title'   => 'Sort Order',
+                'type'    => 'select',
+                'options' => [
+                    [
+                        'title' => '1',
+                        'value' => 1,
+                    ], [
+                        'title' => '2',
+                        'value' => 2,
+                    ], [
+                        'title' => '3',
+                        'value' => 3,
+                    ], [
+                        'title' => '4',
+                        'value' => 4,
+                    ],
+                ],
                 'channel_based' => false,
                 'locale_based' => false,
             ]

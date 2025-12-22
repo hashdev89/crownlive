@@ -40,7 +40,18 @@
 
                 <!-- render html -->
                 @if (! empty($data['html']))
-                    {!! $data['html'] !!}
+                    @php
+                        // Replace hardcoded production URLs with relative URLs
+                        $html = $data['html'];
+                        // Replace https://crowngallery.lk/ with /
+                        $html = preg_replace('/https?:\/\/crowngallery\.lk\//i', '/', $html);
+                        // Replace http://crowngallery.lk/ with /
+                        $html = preg_replace('/http:\/\/crowngallery\.lk\//i', '/', $html);
+                        // Fix image paths that don't start with /storage
+                        $html = preg_replace('/src="(?!\/)(storage\/)/', 'src="/$1', $html);
+                        $html = preg_replace('/data-src="(?!\/)(storage\/)/', 'data-src="/$1', $html);
+                    @endphp
+                    {!! $html !!}
                 @endif
 
                 @break

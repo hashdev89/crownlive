@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting to KOKO Payment...</title>
+    <title>Redirecting to KOKO Payment…</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -14,43 +14,48 @@
             margin: 0;
             background: #f5f5f5;
         }
-        .loader {
-            text-align: center;
-        }
         .spinner {
-            border: 4px solid #f3f3f3;
+            border: 4px solid #ddd;
             border-top: 4px solid #3498db;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .loader { text-align: center; }
     </style>
 </head>
 <body>
-    <div class="loader">
-        <div class="spinner"></div>
-        <p>Redirecting to KOKO Payment...</p>
-        <p style="font-size: 12px; color: #666;">Please wait, do not close this page.</p>
-    </div>
 
-    <form id="koko_redirect" action="{{ $url }}" method="POST">
-        @foreach ($fields as $key => $value)
-            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+<div class="loader">
+    <div class="spinner"></div>
+    <p>Redirecting to KOKO Payment…</p>
+    <p style="font-size:12px;color:#666;">Please wait…</p>
+</div>
+
+<form id="koko_form" action="{{ $url }}" method="POST" enctype="application/x-www-form-urlencoded">
+    @foreach ($fields as $k => $v)
+        <input type="hidden" name="{{ $k }}" value="{{ $v }}">
+    @endforeach
+</form>
+
+<!-- Debug: Show what's being sent (remove in production) -->
+<script>
+    console.log('KOKO Form Fields:', {
+        @foreach ($fields as $k => $v)
+        '{{ $k }}': '{{ strlen($v) > 100 ? substr($v, 0, 100) . "..." : $v }}',
         @endforeach
-    </form>
+    });
+</script>
 
-    <script>
-        // Auto-submit form on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('koko_redirect').submit();
-        });
-    </script>
+<script>
+    document.getElementById("koko_form").submit();
+</script>
+
 </body>
 </html>
-
