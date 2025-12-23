@@ -139,13 +139,15 @@
                 >
                     or 3 X <b>@{{ formatCurrency(installmentPrice) }}</b> with 
                     <span>
-                        <img 
-                            style="display: inline-flex; position: relative; cursor: pointer; height: 19px; vertical-align: middle; width: auto;" 
-                            class="koko-logo lazyloaded" 
-                            src="https://paykoko.com/img/logo1.7ff549c0.png" 
-                            alt="Koko"
-                            loading="lazy"
-                        >
+                        <a href="https://paykoko.com/" target="_blank" rel="noopener noreferrer">
+                            <img 
+                                style="display: inline-flex; position: relative; cursor: pointer; height: 19px; vertical-align: middle; width: auto;" 
+                                class="koko-logo lazyloaded" 
+                                src="https://paykoko.com/img/logo1.7ff549c0.png" 
+                                alt="Koko"
+                                loading="lazy"
+                            >
+                        </a>
                         <img 
                             :data-price="installmentPrice.toFixed(2)" 
                             style="display: inline-flex; position: relative; cursor: pointer; height: 12px; vertical-align: middle; width: 12px;" 
@@ -308,13 +310,15 @@
                 >
                     or 3 X <b>@{{ formatCurrency(installmentPrice) }}</b> with 
                     <span>
-                        <img 
-                            style="display: inline-flex; position: relative; cursor: pointer; height: 19px; vertical-align: middle; width: auto;" 
-                            class="koko-logo lazyloaded" 
-                            src="https://paykoko.com/img/logo1.7ff549c0.png" 
-                            alt="Koko"
-                            loading="lazy"
-                        >
+                        <a href="https://paykoko.com/" target="_blank" rel="noopener noreferrer">
+                            <img 
+                                style="display: inline-flex; position: relative; cursor: pointer; height: 19px; vertical-align: middle; width: auto;" 
+                                class="koko-logo lazyloaded" 
+                                src="https://paykoko.com/img/logo1.7ff549c0.png" 
+                                alt="Koko"
+                                loading="lazy"
+                            >
+                        </a>
                         <img 
                             :data-price="installmentPrice.toFixed(2)" 
                             style="display: inline-flex; position: relative; cursor: pointer; height: 12px; vertical-align: middle; width: 12px;" 

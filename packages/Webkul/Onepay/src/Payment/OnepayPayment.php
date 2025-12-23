@@ -31,7 +31,7 @@ class OnepayPayment extends Payment
      */
     public function getTitle()
     {
-        return $this->getConfigData('title') ?: 'Onepay';
+        return $this->getConfigData('title') ?: 'Online Payment - Visa / Master Card / Amex by Onepay';
     }
 
     /**
@@ -57,9 +57,9 @@ class OnepayPayment extends Payment
             return Storage::url($url);
         }
 
-        // Return null if no image is configured
-        // The frontend will handle null images gracefully
-        return null;
+        // Return default Onepay logo URL if no image is configured
+        // Using the official Onepay logo from their website
+        return 'https://www.onepay.lk/assets/leadform/onepay_logo-09.png';
     }
 }
 
