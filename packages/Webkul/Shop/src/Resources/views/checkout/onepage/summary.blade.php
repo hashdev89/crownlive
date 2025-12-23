@@ -266,13 +266,15 @@
     >
         or 3 X <b>@{{ $shop.formatPrice(parseFloat(cart.grand_total) / 3) }}</b> with 
         <span>
-            <img 
-                style="display: inline-flex; position: relative; cursor: pointer; height: 19px; vertical-align: middle; width: auto;" 
-                class="koko-logo lazyloaded" 
-                src="https://paykoko.com/img/logo1.7ff549c0.png" 
-                alt="Koko"
-                loading="lazy"
-            >
+            <a href="https://paykoko.com/" target="_blank" rel="noopener noreferrer">
+                <img 
+                    style="display: inline-flex; position: relative; cursor: pointer; height: 19px; vertical-align: middle; width: auto;" 
+                    class="koko-logo lazyloaded" 
+                    src="https://paykoko.com/img/logo1.7ff549c0.png" 
+                    alt="Koko"
+                    loading="lazy"
+                >
+            </a>
             <img 
                 :data-price="(parseFloat(cart.grand_total) / 3).toFixed(2)" 
                 style="display: inline-flex; position: relative; cursor: pointer; height: 12px; vertical-align: middle; width: 12px;" 

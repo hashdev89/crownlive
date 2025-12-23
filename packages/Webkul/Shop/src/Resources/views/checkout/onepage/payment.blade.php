@@ -68,10 +68,10 @@
 
                                     <img
                                         v-if="payment.image"
-                                        class="max-h-11 max-w-14"
+                                        :class="payment.method === 'onepay' ? 'max-h-16 max-w-20' : 'max-h-11 max-w-14'"
                                         :src="payment.image"
-                                        width="55"
-                                        height="55"
+                                        :width="payment.method === 'onepay' ? '80' : '55'"
+                                        :height="payment.method === 'onepay' ? '64' : '55'"
                                         :alt="payment.method_title"
                                         :title="payment.method_title"
                                     />
