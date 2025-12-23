@@ -38,7 +38,7 @@ class OnepayConfigSeeder extends Seeder
             // Title (channel and locale based)
             [
                 'code' => 'sales.payment_methods.onepay.title',
-                'value' => 'Onepay',
+                'value' => 'Online Payment - Visa / Master Card / Amex by Onepay',
                 'channel_code' => $channelCode,
                 'locale_code' => $localeCode,
             ],

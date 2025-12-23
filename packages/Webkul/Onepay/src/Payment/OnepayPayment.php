@@ -31,7 +31,7 @@ class OnepayPayment extends Payment
      */
     public function getTitle()
     {
-        return $this->getConfigData('title') ?: 'Onepay';
+        return $this->getConfigData('title') ?: 'Online Payment - Visa / Master Card / Amex by Onepay';
     }
 
     /**
