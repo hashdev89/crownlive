@@ -69,12 +69,13 @@ class Payment
      * Returns payment method additional information
      *
      * @param  string  $code
+     * @param  \Webkul\Sales\Contracts\Order|null  $order
      * @return array
      */
-    public static function getAdditionalDetails($code)
+    public static function getAdditionalDetails($code, $order = null)
     {
         $paymentMethodClass = app(Config::get('payment_methods.'.$code.'.class'));
 
-        return $paymentMethodClass->getAdditionalDetails();
+        return $paymentMethodClass->getAdditionalDetails($order);
     }
 }

@@ -22,15 +22,15 @@ class KokoController
                 return redirect()->route('shop.checkout.cart.index');
             }
 
-            // Load config
-            $merchant   = trim((string) core()->getConfigData('sales.payment_methods.koko.merchant_id'));
-            $apiKey     = trim((string) core()->getConfigData('sales.payment_methods.koko.api_key'));
-            $privateKey = core()->getConfigData('sales.payment_methods.koko.private_key');
-            $publicKey  = core()->getConfigData('sales.payment_methods.koko.public_key');
-            $mobileCfg  = core()->getConfigData('sales.payment_methods.koko.mobile');
-            $callbackBaseUrl = trim((string) core()->getConfigData('sales.payment_methods.koko.callback_base_url'));
+            // Load config (explicitly pass null for channel/locale since these fields are not channel/locale based)
+            $merchant   = trim((string) core()->getConfigData('sales.payment_methods.koko.merchant_id', null, null));
+            $apiKey     = trim((string) core()->getConfigData('sales.payment_methods.koko.api_key', null, null));
+            $privateKey = core()->getConfigData('sales.payment_methods.koko.private_key', null, null);
+            $publicKey  = core()->getConfigData('sales.payment_methods.koko.public_key', null, null);
+            $mobileCfg  = core()->getConfigData('sales.payment_methods.koko.mobile', null, null);
+            $callbackBaseUrl = trim((string) core()->getConfigData('sales.payment_methods.koko.callback_base_url', null, null));
 
-            if (! $merchant || ! $apiKey || ! $privateKey || ! $publicKey) {
+            if (empty($merchant) || empty($apiKey) || empty($privateKey) || empty($publicKey)) {
                 session()->flash('error', 'KOKO payment configuration is incomplete. Please contact administrator.');
                 return redirect()->route('shop.checkout.cart.index');
             }
@@ -272,7 +272,7 @@ class KokoController
 
             Log::info('KOKO Response Callback received', compact('orderId', 'trnId', 'status', 'desc'));
 
-            $publicKey = core()->getConfigData('sales.payment_methods.koko.public_key');
+            $publicKey = core()->getConfigData('sales.payment_methods.koko.public_key', null, null);
 
             if (! $publicKey || ! $signature) {
                 Log::warning('KOKO Response missing public key or signature.');

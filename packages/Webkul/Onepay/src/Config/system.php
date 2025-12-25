@@ -12,7 +12,6 @@ return [
                 'type' => 'text',
                 'channel_based' => true,
                 'locale_based' => true,
-                'validation' => 'nullable',
             ],
             [
                 'name' => 'description',
@@ -20,7 +19,6 @@ return [
                 'type' => 'textarea',
                 'channel_based' => true,
                 'locale_based' => true,
-                'validation' => 'nullable',
             ],
             [
                 'name' => 'image',

@@ -23,11 +23,12 @@ class OnepayController
                 return redirect()->route('shop.checkout.cart.index');
             }
 
-            $appId = core()->getConfigData('sales.payment_methods.onepay.app_id');
-            $hashSalt = core()->getConfigData('sales.payment_methods.onepay.hash_salt');
-            $appToken = core()->getConfigData('sales.payment_methods.onepay.app_token');
+            // Get configuration values (explicitly pass null for channel/locale since these fields are not channel/locale based)
+            $appId = core()->getConfigData('sales.payment_methods.onepay.app_id', null, null);
+            $hashSalt = core()->getConfigData('sales.payment_methods.onepay.hash_salt', null, null);
+            $appToken = core()->getConfigData('sales.payment_methods.onepay.app_token', null, null);
 
-            if (! $appId || ! $hashSalt || ! $appToken) {
+            if (empty($appId) || empty($hashSalt) || empty($appToken)) {
                 session()->flash('error', 'Onepay payment configuration is incomplete. Please contact administrator.');
                 return redirect()->route('shop.checkout.cart.index');
             }

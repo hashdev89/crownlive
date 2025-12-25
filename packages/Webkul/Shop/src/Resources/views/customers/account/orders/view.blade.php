@@ -1896,9 +1896,12 @@
                         <div class="mt-1 grid gap-2.5 text-xs text-black">
                             {{ core()->getConfigData('sales.payment_methods.' . $order->payment->method . '.title') }}
 
+                            @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($order->payment->method, $order); @endphp
+
                             @if (! empty($additionalDetails))
                                 <div class="instructions">
                                     <label>{{ $additionalDetails['title'] }}</label>
+                                    <div class="mt-1 text-xs">{!! $additionalDetails['value'] !!}</div>
                                 </div>
                             @endif
                             
@@ -1978,9 +1981,12 @@
                         {{ core()->getConfigData('sales.payment_methods.' . $order->payment->method . '.title') }}
                     </p>
 
+                    @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($order->payment->method, $order); @endphp
+
                     @if (! empty($additionalDetails))
                         <div class="instructions">
                             <label>{{ $additionalDetails['title'] }}</label>
+                            <div class="mt-1 text-xs">{!! $additionalDetails['value'] !!}</div>
                         </div>
                     @endif
                     

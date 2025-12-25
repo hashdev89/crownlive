@@ -23,9 +23,10 @@ class MoneyTransfer extends Payment
     /**
      * Returns payment method additional information.
      *
+     * @param  \Webkul\Sales\Contracts\Order|null  $order
      * @return array
      */
-    public function getAdditionalDetails()
+    public function getAdditionalDetails($order = null)
     {
         if (empty($this->getConfigData('mailing_address'))) {
             return [];

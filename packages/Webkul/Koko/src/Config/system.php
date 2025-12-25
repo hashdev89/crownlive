@@ -12,7 +12,6 @@ return [
                 'type' => 'text',
                 'channel_based' => true,
                 'locale_based' => true,
-                'validation' => 'nullable',
             ],
             [
                 'name' => 'description',
@@ -20,7 +19,6 @@ return [
                 'type' => 'textarea',
                 'channel_based' => true,
                 'locale_based' => true,
-                'validation' => 'nullable',
             ],
             [
                 'name' => 'image',
@@ -77,7 +75,7 @@ return [
                 'title' => 'Callback Base URL (Optional)',
                 'type' => 'text',
                 'depends' => 'active:1',
-                'validation' => 'nullable|url',
+                'validation' => 'url',
                 'info' => 'Override base URL for callbacks. Leave empty to use current domain. Required for local testing with ngrok/tunneling.',
                 'example' => 'https://crowngallery.lk or https://leguminous-unhumbly-clare.ngrok-free.dev',
             ],

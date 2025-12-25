@@ -621,7 +621,7 @@
                                 @lang('admin::app.sales.orders.view.currency')
                             </p>
 
-                            @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($order->payment->method); @endphp
+                            @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($order->payment->method, $order); @endphp
 
                             <!-- Addtional details -->
                             @if (! empty($additionalDetails))
@@ -630,7 +630,7 @@
                                 </p>
 
                                 <p class="text-gray-600 dark:text-gray-300">
-                                    {{ $additionalDetails['value'] }}
+                                    {!! $additionalDetails['value'] !!}
                                 </p>
                             @endif
 

@@ -435,7 +435,7 @@
                             <td style="width: 50%">
                                 {{ core()->getConfigData('sales.payment_methods.' . $invoice->order->payment->method . '.title') }}
 
-                                @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($invoice->order->payment->method); @endphp
+                                @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($invoice->order->payment->method, $invoice->order); @endphp
 
                                 @if (! empty($additionalDetails))
                                     <div class="row small-text">
