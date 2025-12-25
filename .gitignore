@@ -4,6 +4,9 @@
 .vscode
 .vagrant
 *.hot
+# macOS metadata files
+._*
+.DS_Store
 /stubs
 /data
 /docker-compose-collection
